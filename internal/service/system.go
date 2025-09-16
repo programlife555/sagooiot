@@ -47,13 +47,13 @@ type (
 		// JobLogList 获取任务日志列表
 		JobLogList(ctx context.Context, input *model.GetJobLogListInput) (total int, out []*model.SysJobLogOut, err error)
 		// AddJobLog 添加任务日志
-		AddJobLog(ctx context.Context,input *model.SysJobLogAddInput) (err error)
+		AddJobLog(ctx context.Context, input *model.SysJobLogAddInput) (err error)
 		// DelJobLogByIds 根据ID删除任务日志
 		DelJobLogByIds(ctx context.Context, ids []int) (err error)
 		// Export 导出任务日志列表
 		Export(ctx context.Context, input *model.GetJobLogListInput) (err error)
 		// ClearJobLogByDays 清理指定天数的定时任务日志
-		ClearJobLogByDays(ctx context.Context,days int) (err error)
+		ClearJobLogByDays(ctx context.Context, days int) (err error)
 	}
 	ISysLoginLog interface {
 		Invoke(ctx context.Context, data *model.LoginLogParams)
@@ -203,6 +203,8 @@ type (
 		CheckPassword(ctx context.Context, userPassword string) (err error)
 		// EditPassword 修改密码
 		EditPassword(ctx context.Context, userName string, oldUserPassword string, userPassword string) (err error)
+		// GetUsersByCodes 根据用户编码数组批量获取用户信息
+		GetUsersByCodes(ctx context.Context, codes []string) (data []*entity.SysUser, err error)
 	}
 	ISysUserOnline interface {
 		Invoke(ctx context.Context, data *entity.SysUserOnline)

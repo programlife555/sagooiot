@@ -28,6 +28,21 @@ func GetUserAll(ctx context.Context) (data []*proxyModel.UserInfoOut, err error)
 	return
 }
 
+// GetUserInfoByCodes 根据用户编码数组批量获取用户信息
+func GetUserInfoByCodes(ctx context.Context, codes []string) (data []*proxyModel.UserInfoOut, err error) {
+	if len(codes) == 0 {
+		return
+	}
+	sysUserInfo, err := service.SysUser().GetUsersByCodes(ctx, codes)
+	if err != nil {
+		return
+	}
+	if len(sysUserInfo) > 0 {
+		err = gconv.Scan(sysUserInfo, &data)
+	}
+	return
+}
+
 // GetDeptInfoById 根据部门id获取部门信息
 func GetDeptInfoById(ctx context.Context, deptId int64) (out *proxyModel.SysDeptOut, err error) {
 	//获取部门名称

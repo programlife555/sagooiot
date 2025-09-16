@@ -26,6 +26,7 @@ type LoginUserOut struct {
 
 type UserListOut struct {
 	Id            uint64         `json:"id"            description:""`
+	Code          string         `json:"code"          description:""`
 	UserName      string         `json:"userName"      description:"用户名"`
 	UserTypes     string         `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string         `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`
@@ -52,6 +53,7 @@ type UserListOut struct {
 
 type UserListRes struct {
 	Id            uint64         `json:"id"            description:""`
+	Code          string         `json:"code"          description:""`
 	UserName      string         `json:"userName"      description:"用户名"`
 	UserTypes     string         `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string         `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`
@@ -78,6 +80,7 @@ type UserListRes struct {
 
 type UserRes struct {
 	Id            uint64         `json:"id"            description:""`
+	Code          string         `json:"code"          description:""`
 	UserName      string         `json:"userName"      description:"用户名"`
 	UserTypes     string         `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string         `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`
@@ -144,6 +147,7 @@ type EditUserInput struct {
 
 type UserInfoRes struct {
 	Id            uint64      `json:"id"            description:""`
+	Code          string      `json:"code"          description:""`
 	UserName      string      `json:"userName"      description:"用户名"`
 	UserTypes     string      `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string      `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`
@@ -169,6 +173,7 @@ type UserInfoRes struct {
 }
 type UserInfoOut struct {
 	Id            uint64      `json:"id"            description:""`
+	Code          string      `json:"code"          description:""`
 	UserName      string      `json:"userName"      description:"用户名"`
 	UserTypes     string      `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string      `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`

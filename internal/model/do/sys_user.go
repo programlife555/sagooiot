@@ -38,4 +38,5 @@ type SysUser struct {
 	UpdatedAt     *gtime.Time // 修改日期
 	DeletedBy     interface{} // 删除人
 	DeletedAt     *gtime.Time // 删除时间
+	Code          interface{} // 编码
 }

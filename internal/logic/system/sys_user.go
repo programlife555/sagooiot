@@ -4,13 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/gogf/gf/v2/database/gdb"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gcache"
-	"github.com/gogf/gf/v2/os/gtime"
-	"github.com/gogf/gf/v2/util/gconv"
-	"github.com/gogf/gf/v2/util/grand"
 	"sagooiot/internal/consts"
 	"sagooiot/internal/dao"
 	"sagooiot/internal/model"
@@ -22,6 +15,14 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gcache"
+	"github.com/gogf/gf/v2/os/gtime"
+	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/gogf/gf/v2/util/grand"
 )
 
 type sSysUser struct {
@@ -234,6 +235,9 @@ func (s *sSysUser) Add(ctx context.Context, input *model.AddUserInput) (err erro
 		return
 	}
 
+	timestamp := gtime.Now().TimestampMilli()
+	code := "U_" + gconv.String(timestamp) + "_" + grand.S(6)
+
 	//开启事务管理
 	err = dao.SysUser.Transaction(ctx, func(ctx context.Context, tx gdb.TX) (err error) {
 		//添加用户
@@ -250,6 +254,7 @@ func (s *sSysUser) Add(ctx context.Context, input *model.AddUserInput) (err erro
 		loginUserId := service.Context().GetUserId(ctx)
 		//添加用户信息
 		result, err := dao.SysUser.Ctx(ctx).Data(do.SysUser{
+			Code:         code,
 			UserName:     sysUser.UserName,
 			UserTypes:    sysUser.UserTypes,
 			Mobile:       sysUser.Mobile,
@@ -1066,5 +1071,14 @@ func (s *sSysUser) EditPassword(ctx context.Context, userName string, oldUserPas
 	if err != nil {
 		return
 	}
+	return
+}
+
+// GetUsersByCodes 根据用户编码数组批量获取用户信息
+func (s *sSysUser) GetUsersByCodes(ctx context.Context, codes []string) (data []*entity.SysUser, err error) {
+	err = dao.SysUser.Ctx(ctx).
+		WhereIn(dao.SysUser.Columns().Code, codes).
+		Where(dao.SysUser.Columns().IsDeleted, 0).
+		Scan(&data)
 	return
 }

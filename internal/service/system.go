@@ -203,6 +203,8 @@ type (
 		CheckPassword(ctx context.Context, userPassword string) (err error)
 		// EditPassword 修改密码
 		EditPassword(ctx context.Context, userName string, oldUserPassword string, userPassword string) (err error)
+		// GetUsersByCodes 根据用户编码数组批量获取用户信息
+		GetUsersByCodes(ctx context.Context, codes []string) (data []*entity.SysUser, err error)
 	}
 	ISysUserOnline interface {
 		Invoke(ctx context.Context, data *entity.SysUserOnline)

@@ -14,7 +14,7 @@ import (
 type (
 	INoticeConfig interface {
 		// GetNoticeConfigList 获取列表数据
-		GetNoticeConfigList(ctx context.Context, in *model.GetNoticeConfigListInput) (total, page int, list []*model.NoticeConfigOutput, err error)
+		GetNoticeConfigList(ctx context.Context, in *model.GetNoticeConfigListInput) (total int, page int, list []*model.NoticeConfigOutput, err error)
 		// GetNoticeConfigById 获取指定ID数据
 		GetNoticeConfigById(ctx context.Context, id string) (out *model.NoticeConfigOutput, err error)
 		// AddNoticeConfig 添加数据
@@ -26,7 +26,7 @@ type (
 	}
 	INoticeInfo interface {
 		// GetNoticeInfoList 获取列表数据
-		GetNoticeInfoList(ctx context.Context, in *model.GetNoticeInfoListInput) (total, page int, list []*model.NoticeInfoOutput, err error)
+		GetNoticeInfoList(ctx context.Context, in *model.GetNoticeInfoListInput) (total int, page int, list []*model.NoticeInfoOutput, err error)
 		// GetNoticeInfoById 获取指定ID数据
 		GetNoticeInfoById(ctx context.Context, id int) (out *model.NoticeInfoOutput, err error)
 		// AddNoticeInfo 添加数据
@@ -50,7 +50,7 @@ type (
 	}
 	INoticeTemplate interface {
 		// GetNoticeTemplateList 获取列表数据
-		GetNoticeTemplateList(ctx context.Context, in *model.GetNoticeTemplateListInput) (total, page int, list []*model.NoticeTemplateOutput, err error)
+		GetNoticeTemplateList(ctx context.Context, in *model.GetNoticeTemplateListInput) (total int, page int, list []*model.NoticeTemplateOutput, err error)
 		// GetNoticeTemplateById 获取指定ID数据
 		GetNoticeTemplateById(ctx context.Context, id string) (out *model.NoticeTemplateOutput, err error)
 		// GetNoticeTemplateByConfigId 获取指定ConfigID数据
@@ -67,10 +67,10 @@ type (
 )
 
 var (
+	localNoticeConfig   INoticeConfig
 	localNoticeInfo     INoticeInfo
 	localNoticeLog      INoticeLog
 	localNoticeTemplate INoticeTemplate
-	localNoticeConfig   INoticeConfig
 )
 
 func NoticeConfig() INoticeConfig {

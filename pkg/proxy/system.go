@@ -55,6 +55,17 @@ func GetDeptInfoById(ctx context.Context, deptId int64) (out *proxyModel.SysDept
 	return
 }
 
+// GetDeptInfoByCodes 根据部门编码批量获取部门信息
+func GetDeptInfoByCodes(ctx context.Context, codes []string) (data []*proxyModel.SysDeptOut, err error) {
+	sysDeptInfo, err := service.SysDept().GetInfoByCodes(ctx, codes)
+	if err != nil {
+		return
+	}
+	if len(sysDeptInfo) > 0 {
+		err = gconv.Scan(sysDeptInfo, &data)
+	}
+	return
+}
 func GetDeptAll(ctx context.Context) (out []*proxyModel.SysDeptOut, err error) {
 	//获取部门名称
 	deptOut, _ := service.SysDept().GetAll(ctx)

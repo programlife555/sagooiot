@@ -2,7 +2,6 @@ package system
 
 import (
 	"context"
-	"github.com/gogf/gf/v2/os/gtime"
 	"sagooiot/internal/consts"
 	"sagooiot/internal/dao"
 	"sagooiot/internal/model"
@@ -17,7 +16,9 @@ import (
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/gogf/gf/v2/util/grand"
 )
 
 type sSysDept struct {
@@ -155,10 +156,13 @@ func (s *sSysDept) Add(ctx context.Context, input *model.AddDeptInput) (err erro
 
 	dept.IsDeleted = 0
 	dept.CreatedBy = uint(loginUserId)
+	timestamp := gtime.Now().TimestampMilli()
+	code := "DEPT_" + gconv.String(timestamp) + "_" + grand.S(6)
 	//开启事务管理
 	err = dao.SysDept.Transaction(ctx, func(ctx context.Context, tx gdb.TX) (err error) {
 		result, err := dao.SysDept.Ctx(ctx).Data(do.SysDept{
 			OrganizationId: dept.OrganizationId,
+			DeptCode:       code,
 			ParentId:       dept.ParentId,
 			Ancestors:      dept.Ancestors,
 			DeptName:       dept.DeptName,
@@ -435,5 +439,31 @@ func (s *sSysDept) GetDeptInfosByParentId(ctx context.Context, parentId int) (da
 		dao.SysDept.Columns().IsDeleted: 0,
 		dao.SysDept.Columns().ParentId:  parentId,
 	}).Scan(&data)
+	return
+}
+
+// GetInfoByIds 根据部门ID数组批量获取部门信息
+func (s *sSysDept) GetInfoByIds(ctx context.Context, deptIds []int64) (data []*model.DetailDeptOut, err error) {
+	if len(deptIds) == 0 {
+		return
+	}
+
+	m := dao.SysDept.Ctx(ctx)
+
+	err = m.WhereIn(dao.SysDept.Columns().DeptId, deptIds).
+		Where(dao.SysDept.Columns().IsDeleted, 0).
+		OrderAsc(dao.SysDept.Columns().OrderNum).
+		Scan(&data)
+	return
+}
+
+// GetInfoByCodes 根据部门Code数组批量获取部门信息
+func (s *sSysDept) GetInfoByCodes(ctx context.Context, deptCodes []string) (data []*model.DetailDeptOut, err error) {
+	m := dao.SysDept.Ctx(ctx)
+
+	err = m.WhereIn(dao.SysDept.Columns().DeptCode, deptCodes).
+		Where(dao.SysDept.Columns().IsDeleted, 0).
+		OrderAsc(dao.SysDept.Columns().OrderNum).
+		Scan(&data)
 	return
 }

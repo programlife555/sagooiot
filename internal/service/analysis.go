@@ -12,15 +12,6 @@ import (
 )
 
 type (
-	IAnalysisDeviceDataTsd interface {
-		GetDeviceData(ctx context.Context, reqData general.SelectReq) (rs []interface{}, err error)
-	}
-	IAnalysisProduct interface {
-		// GetDeviceCountForProduct 获取产品下的设备数量
-		GetDeviceCountForProduct(ctx context.Context, productKey string) (number int, err error)
-		// GetProductCount 获取产品数量统计
-		GetProductCount(ctx context.Context) (res model.ProductCountRes, err error)
-	}
 	IAnalysisAlarm interface {
 		// GetDeviceAlertCountByYearMonth 按年度每月设备告警数统计
 		GetDeviceAlertCountByYearMonth(ctx context.Context, year string) (res []model.CountData, err error)
@@ -29,9 +20,9 @@ type (
 		// GetDeviceAlertCountByDayHour 按日每小时设备告警数统计
 		GetDeviceAlertCountByDayHour(ctx context.Context, day string) (res []model.CountData, err error)
 		// GetAlarmTotalCount 告警总数统计（当年、当月、当日）,dataType :day,month,year ,date:2021 or 01 or21
-		GetAlarmTotalCount(ctx context.Context, dataType, date string) (number int64, err error)
+		GetAlarmTotalCount(ctx context.Context, dataType string, date string) (number int64, err error)
 		// GetAlarmLevelCount 告警级别统计
-		GetAlarmLevelCount(ctx context.Context, dataType, date string) (res []model.CountData, err error)
+		GetAlarmLevelCount(ctx context.Context, dataType string, date string) (res []model.CountData, err error)
 	}
 	IAnalysisDevice interface {
 		// GetDeviceDataTotalCount 获取设备消息总数统计,dataType :day,month,year
@@ -51,15 +42,35 @@ type (
 		// GetDeviceAlarmLogData 获取设备告警数据
 		GetDeviceAlarmLogData(ctx context.Context, reqData *general.SelectReq) (res interface{}, err error)
 	}
+	IAnalysisDeviceDataTsd interface {
+		GetDeviceData(ctx context.Context, reqData general.SelectReq) (rs []interface{}, err error)
+	}
+	IAnalysisProduct interface {
+		// GetDeviceCountForProduct 获取产品下的设备数量
+		GetDeviceCountForProduct(ctx context.Context, productKey string) (number int, err error)
+		// GetProductCount 获取产品数量统计
+		GetProductCount(ctx context.Context) (res model.ProductCountRes, err error)
+	}
 )
 
 var (
+	localAnalysisAlarm         IAnalysisAlarm
 	localAnalysisDevice        IAnalysisDevice
 	localAnalysisDeviceData    IAnalysisDeviceData
 	localAnalysisDeviceDataTsd IAnalysisDeviceDataTsd
 	localAnalysisProduct       IAnalysisProduct
-	localAnalysisAlarm         IAnalysisAlarm
 )
+
+func AnalysisAlarm() IAnalysisAlarm {
+	if localAnalysisAlarm == nil {
+		panic("implement not found for interface IAnalysisAlarm, forgot register?")
+	}
+	return localAnalysisAlarm
+}
+
+func RegisterAnalysisAlarm(i IAnalysisAlarm) {
+	localAnalysisAlarm = i
+}
 
 func AnalysisDevice() IAnalysisDevice {
 	if localAnalysisDevice == nil {
@@ -103,15 +114,4 @@ func AnalysisProduct() IAnalysisProduct {
 
 func RegisterAnalysisProduct(i IAnalysisProduct) {
 	localAnalysisProduct = i
-}
-
-func AnalysisAlarm() IAnalysisAlarm {
-	if localAnalysisAlarm == nil {
-		panic("implement not found for interface IAnalysisAlarm, forgot register?")
-	}
-	return localAnalysisAlarm
-}
-
-func RegisterAnalysisAlarm(i IAnalysisAlarm) {
-	localAnalysisAlarm = i
 }

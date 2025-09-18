@@ -26,7 +26,7 @@ type (
 		// todo 需要处理
 		DeleteServer(ctx context.Context, ids []int) (err error)
 		// SetServerStatus 修改状态数据 todo 需要处理
-		SetServerStatus(ctx context.Context, id, status int) (err error)
+		SetServerStatus(ctx context.Context, id int, status int) (err error)
 	}
 	INetworkTunnel interface {
 		// GetTunnelList 获取列表数据
@@ -43,7 +43,7 @@ type (
 		// DeleteTunnel 删除数据
 		DeleteTunnel(ctx context.Context, ids []int) (err error)
 		// SetTunnelStatus 修改状态数据
-		SetTunnelStatus(ctx context.Context, id, status int) (err error)
+		SetTunnelStatus(ctx context.Context, id int, status int) (err error)
 	}
 )
 

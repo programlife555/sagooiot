@@ -29,4 +29,5 @@ type SysDept struct {
 	UpdatedAt      *gtime.Time // 修改时间
 	DeletedBy      interface{} // 删除人
 	DeletedAt      *gtime.Time // 删除时间
+	DeptCode       interface{} // 部门编码
 }

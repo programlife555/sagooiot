@@ -3,13 +3,6 @@ package system
 import (
 	"context"
 	"fmt"
-	"github.com/gogf/gf/v2/crypto/gmd5"
-	"github.com/gogf/gf/v2/errors/gerror"
-	"github.com/gogf/gf/v2/net/ghttp"
-	"github.com/gogf/gf/v2/os/gtime"
-	"github.com/gogf/gf/v2/util/gconv"
-	"github.com/gogf/gf/v2/util/guid"
-	"github.com/mssola/useragent"
 	"sagooiot/internal/consts"
 	"sagooiot/internal/dao"
 	"sagooiot/internal/model"
@@ -19,6 +12,14 @@ import (
 	"sagooiot/pkg/utility/utils"
 	"strconv"
 	"strings"
+
+	"github.com/gogf/gf/v2/crypto/gmd5"
+	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/net/ghttp"
+	"github.com/gogf/gf/v2/os/gtime"
+	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/gogf/gf/v2/util/guid"
+	"github.com/mssola/useragent"
 )
 
 type sLogin struct {
@@ -237,6 +238,7 @@ func (s *sLogin) GenUserToken(ctx context.Context, isSecurityControlEnabled stri
 		key = "Login:" + gconv.String(userInfo.Id) + "-" + gmd5.MustEncryptString(userInfo.UserName) + "-" + gmd5.MustEncryptString(ip+userAgent)
 	}
 	userInfo.UserPassword = ""
+
 	token, err = service.SysToken().GenerateToken(ctx, key, userInfo)
 	if err != nil {
 		return

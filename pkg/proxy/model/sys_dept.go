@@ -4,6 +4,7 @@ import "github.com/gogf/gf/v2/os/gtime"
 
 type SysDeptOut struct {
 	DeptId         int64       `json:"deptId"         description:"部门id"`
+	DeptCode       string      `json:"deptCode"         description:"部门编码"`
 	OrganizationId int         `json:"organizationId" description:"组织ID"`
 	ParentId       int64       `json:"parentId"       description:"父部门id"`
 	Ancestors      string      `json:"ancestors"      description:"祖级列表"`

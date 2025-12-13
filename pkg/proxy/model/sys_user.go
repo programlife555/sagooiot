@@ -4,6 +4,7 @@ import "github.com/gogf/gf/v2/os/gtime"
 
 type UserInfoOut struct {
 	Id            uint64      `json:"id"            description:""`
+	Code          string      `json:"code"          description:"用户名编码"`
 	UserName      string      `json:"userName"      description:"用户名"`
 	UserTypes     string      `json:"userTypes"     description:"系统 system 企业 company"`
 	Mobile        string      `json:"mobile"        description:"中国手机不带国家代码，国际手机号格式为：国家代码-手机号"`
@@ -20,13 +21,13 @@ type UserInfoOut struct {
 	LastLoginIp   string      `json:"lastLoginIp"   description:"最后登录ip"`
 	LastLoginTime *gtime.Time `json:"lastLoginTime" description:"最后登录时间"`
 	Status        uint        `json:"status"        description:"用户状态;0:禁用,1:正常,2:未验证"`
-	CreatedBy     uint        `json:"createdBy"      description:"创建者"`
-	IsDeleted     int         `json:"isDeleted"     orm:"is_deleted"      description:"是否删除 0未删除 1已删除"`
+	CreatedBy     uint        `json:"createdBy"     description:"创建者"`
+	IsDeleted     int         `json:"isDeleted"     description:"是否删除 0未删除 1已删除"`
 	CreatedAt     *gtime.Time `json:"createdAt"     description:"创建日期"`
-	UpdatedBy     uint        `json:"updatedBy"      description:"更新者"`
+	UpdatedBy     uint        `json:"updatedBy"     description:"更新者"`
 	UpdatedAt     *gtime.Time `json:"updatedAt"     description:"修改日期"`
-	RoleIds       []int       `json:"roleIds"      description:"角色ID数组" v:"required#角色不能为空"`
-	PostIds       []int       `json:"postIds"      description:"岗位ID数组" v:"required#岗位不能为空"`
+	RoleIds       []int       `json:"roleIds"       description:"角色ID数组" v:"required#角色不能为空"`
+	PostIds       []int       `json:"postIds"       description:"岗位ID数组" v:"required#岗位不能为空"`
 }
 
 type LoginUserOut struct {

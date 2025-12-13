@@ -17,22 +17,6 @@ import (
 )
 
 type (
-	IUpload interface {
-		// UploadFiles 上传多文件
-		UploadFiles(ctx context.Context, files []*ghttp.UploadFile, checkFileType string, source int) (result common.UploadMultipleRes, err error)
-		// UploadFile 上传单文件
-		UploadFile(ctx context.Context, file *ghttp.UploadFile, checkFileType string, source int) (result common.UploadResponse, err error)
-		// UploadTencent 上传至腾讯云
-		UploadTencent(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
-		// UploadLocal 上传本地
-		UploadLocal(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
-		// CheckSize 检查上传文件大小
-		CheckSize(ctx context.Context, checkFileType string, file *ghttp.UploadFile) (err error)
-		// CheckType 检查上传文件类型
-		CheckType(ctx context.Context, checkFileType string, file *ghttp.UploadFile) (err error)
-		// UploadMinIO 上传至MinIO
-		UploadMinIO(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
-	}
 	ICheckAuth interface {
 		// IsToken 验证TOKEN是否正确
 		IsToken(ctx context.Context) (isToken bool, expiresAt int64, isAuth string, err error)
@@ -106,18 +90,56 @@ type (
 		// ServerInfoEscalation 客户端服务信息上报
 		ServerInfoEscalation(ctx context.Context) (err error)
 	}
+	IUpload interface {
+		// UploadFiles 上传多文件
+		UploadFiles(ctx context.Context, files []*ghttp.UploadFile, checkFileType string, source int) (result common.UploadMultipleRes, err error)
+		// UploadFile 上传单文件
+		UploadFile(ctx context.Context, file *ghttp.UploadFile, checkFileType string, source int) (result common.UploadResponse, err error)
+		// UploadTencent 上传至腾讯云
+		UploadTencent(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
+		// UploadLocal 上传本地
+		UploadLocal(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
+		// CheckSize 检查上传文件大小
+		CheckSize(ctx context.Context, checkFileType string, file *ghttp.UploadFile) (err error)
+		// CheckType 检查上传文件类型
+		CheckType(ctx context.Context, checkFileType string, file *ghttp.UploadFile) (err error)
+		// UploadMinIO 上传至MinIO
+		UploadMinIO(ctx context.Context, file *ghttp.UploadFile) (result common.UploadResponse, err error)
+	}
 )
 
 var (
-	localSysInfo     ISysInfo
-	localUpload      IUpload
 	localCheckAuth   ICheckAuth
 	localConfigData  IConfigData
 	localDictData    IDictData
 	localDictType    IDictType
 	localPgSequences IPgSequences
 	localSequences   ISequences
+	localSysInfo     ISysInfo
+	localUpload      IUpload
 )
+
+func CheckAuth() ICheckAuth {
+	if localCheckAuth == nil {
+		panic("implement not found for interface ICheckAuth, forgot register?")
+	}
+	return localCheckAuth
+}
+
+func RegisterCheckAuth(i ICheckAuth) {
+	localCheckAuth = i
+}
+
+func ConfigData() IConfigData {
+	if localConfigData == nil {
+		panic("implement not found for interface IConfigData, forgot register?")
+	}
+	return localConfigData
+}
+
+func RegisterConfigData(i IConfigData) {
+	localConfigData = i
+}
 
 func DictData() IDictData {
 	if localDictData == nil {
@@ -183,26 +205,4 @@ func Upload() IUpload {
 
 func RegisterUpload(i IUpload) {
 	localUpload = i
-}
-
-func CheckAuth() ICheckAuth {
-	if localCheckAuth == nil {
-		panic("implement not found for interface ICheckAuth, forgot register?")
-	}
-	return localCheckAuth
-}
-
-func RegisterCheckAuth(i ICheckAuth) {
-	localCheckAuth = i
-}
-
-func ConfigData() IConfigData {
-	if localConfigData == nil {
-		panic("implement not found for interface IConfigData, forgot register?")
-	}
-	return localConfigData
-}
-
-func RegisterConfigData(i IConfigData) {
-	localConfigData = i
 }

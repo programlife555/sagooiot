@@ -38,7 +38,7 @@ type (
 		// 添加超级表
 		CreateStable(ctx context.Context, tsl *model.TSL) (err error)
 		// 添加子表
-		CreateTable(ctx context.Context, stable, table string) (err error)
+		CreateTable(ctx context.Context, stable string, table string) (err error)
 		// 删除超级表
 		DropStable(ctx context.Context, stable string) (err error)
 		// 删除子表
@@ -50,17 +50,17 @@ type (
 		// CheckTable 查询子表是否存在, true=存在
 		CheckTable(ctx context.Context, table string) (b bool, err error)
 		// AddDatabaseField 添加数据库字段
-		AddDatabaseField(ctx context.Context, tableName, fieldName string, dataType string, len int) (err error)
+		AddDatabaseField(ctx context.Context, tableName string, fieldName string, dataType string, len int) (err error)
 		// DelDatabaseField 删除数据库字段
-		DelDatabaseField(ctx context.Context, tableName, fieldName string) (err error)
+		DelDatabaseField(ctx context.Context, tableName string, fieldName string) (err error)
 		// ModifyDatabaseField 修改数据库指定字段长度
-		ModifyDatabaseField(ctx context.Context, tableName, fieldName string, dataType string, len int) (err error)
+		ModifyDatabaseField(ctx context.Context, tableName string, fieldName string, dataType string, len int) (err error)
 		// AddTag 添加标签
-		AddTag(ctx context.Context, tableName, tagName string, dataType string, len int) (err error)
+		AddTag(ctx context.Context, tableName string, tagName string, dataType string, len int) (err error)
 		// DelTag 删除标签
-		DelTag(ctx context.Context, tableName, tagName string) (err error)
+		DelTag(ctx context.Context, tableName string, tagName string) (err error)
 		// ModifyTag 修改标签
-		ModifyTag(ctx context.Context, tableName, tagName string, dataType string, len int) (err error)
+		ModifyTag(ctx context.Context, tableName string, tagName string, dataType string, len int) (err error)
 	}
 )
 
